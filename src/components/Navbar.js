@@ -1,40 +1,66 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Flex, Menu, MenuButton, MenuList, MenuItem, Text, IconButton } from '@chakra-ui/core'
+import {
+  Flex,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+  IconButton
+} from '@chakra-ui/core'
+import { MyContext } from '../context'
 
 function Navbar({ history }) {
   const go = path => history.push(path)
   return (
-    <Flex
-      pos="fixed"
-      top={0}
-      zIndex="99"
-      backgroundColor="white"
-      w="100vw"
-      h="10vh"
-      p={8}
-      align="center"
-      justify="space-between"
-    >
-      <Text fontSize="xl" fontWeight="bolder" onClick={() => go('/')}>
-        mimeme
-      </Text>
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          variant="outline"
-          variantColor="whity"
-          aria-label="Menu"
-          size="lg"
-          icon="menu"
-        ></MenuButton>
-        <MenuList>
-          <MenuItem onClick={() => go('/')}>Home</MenuItem>
-          <MenuItem onClick={() => go('/login')}>Login</MenuItem>
-          <MenuItem onClick={() => go('/signup')}>Signup</MenuItem>
-        </MenuList>
-      </Menu>
-    </Flex>
+    <MyContext.Consumer>
+      {context => {
+        return (
+          <Flex
+            pos="fixed"
+            top={0}
+            zIndex="99"
+            backgroundColor="white"
+            w="100vw"
+            h="10vh"
+            p={8}
+            align="center"
+            justify="space-between"
+          >
+            <Text fontSize="xl" fontWeight="bolder" onClick={() => go('/')}>
+              mimeme
+            </Text>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                variant="outline"
+                variantColor="whity"
+                aria-label="Menu"
+                size="lg"
+                icon="menu"
+              ></MenuButton>
+              <MenuList>
+                {!context.state.isLogged && (
+                  <>
+                    <MenuItem onClick={() => go('/')}>Home</MenuItem>
+                    <MenuItem onClick={() => go('/login')}>Login</MenuItem>
+                    <MenuItem onClick={() => go('/signup')}>Signup</MenuItem>
+                  </>
+                )}
+                {context.state.isLogged && (
+                  <>
+                    <MenuItem onClick={() => go('/create')}>Create</MenuItem>
+                    <MenuItem onClick={() => go('/profile')}>Profile</MenuItem>
+                    <MenuItem onClick={context.handleLogout}>Logout</MenuItem>
+                  </>
+                )}
+              </MenuList>
+            </Menu>
+          </Flex>
+        )
+      }}
+    </MyContext.Consumer>
   )
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import MyProvider from './context'
 import { ThemeProvider, CSSReset } from '@chakra-ui/core'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
@@ -11,10 +12,12 @@ ReactDOM.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
       <CSSReset />
-      <Routes />
+      <MyProvider>
+        <Routes />
+      </MyProvider>
     </ThemeProvider>
   </BrowserRouter>,
   document.getElementById('root')
 )
 
-serviceWorker.unregister()
+serviceWorker.register()
